@@ -1,7 +1,7 @@
 {
   "name": "macula-code",
   "displayName": "Macula Mesh",
-  "description": "VS Code extension for the Macula mesh — sovereign collaborative editing, mesh rooms, AI agents, and content sharing",
+  "description": "VS Code extension for the Macula mesh \u2014 sovereign collaborative editing, mesh rooms, AI agents, and content sharing",
   "version": "0.1.0",
   "publisher": "macula-io",
   "license": "Apache-2.0",
@@ -182,5 +182,6 @@
   },
   "dependencies": {
     "@macula-io/ts": "^0.17.0"
-  }
+  },
+  "icon": "assets/icon.png"
 }
