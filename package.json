@@ -1,0 +1,186 @@
+{
+  "name": "macula-code",
+  "displayName": "Macula Mesh",
+  "description": "VS Code extension for the Macula mesh — sovereign collaborative editing, mesh rooms, AI agents, and content sharing",
+  "version": "0.1.0",
+  "publisher": "macula-io",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/macula-apps/macula-code"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "macula.connect",
+        "title": "Macula: Connect to Mesh",
+        "category": "Macula"
+      },
+      {
+        "command": "macula.disconnect",
+        "title": "Macula: Disconnect from Mesh",
+        "category": "Macula"
+      },
+      {
+        "command": "macula.openRoom",
+        "title": "Macula: Open Mesh Room",
+        "category": "Macula"
+      },
+      {
+        "command": "macula.joinRoom",
+        "title": "Macula: Join Mesh Room",
+        "category": "Macula"
+      },
+      {
+        "command": "macula.shareSnippet",
+        "title": "Macula: Share Snippet as MCID",
+        "category": "Macula"
+      },
+      {
+        "command": "macula.fetchSnippet",
+        "title": "Macula: Fetch Snippet by MCID",
+        "category": "Macula"
+      },
+      {
+        "command": "macula.callAgent",
+        "title": "Macula: Call Mesh Agent",
+        "category": "Macula"
+      }
+    ],
+    "views": {
+      "macula": [
+        {
+          "id": "macula.rooms",
+          "name": "Mesh Rooms",
+          "when": "macula.connected"
+        },
+        {
+          "id": "macula.agents",
+          "name": "Mesh Agents",
+          "when": "macula.connected"
+        },
+        {
+          "id": "macula.content",
+          "name": "Mesh Content",
+          "when": "macula.connected"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "macula",
+          "title": "Macula Mesh",
+          "icon": "assets/macula-icon.svg"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Macula Mesh",
+      "properties": {
+        "macula.stationHost": {
+          "type": "string",
+          "default": "station-de-frankfurt.macula.io",
+          "description": "Macula station hostname"
+        },
+        "macula.stationPort": {
+          "type": "number",
+          "default": 4433,
+          "description": "Macula station port"
+        },
+        "macula.realm": {
+          "type": "string",
+          "default": "",
+          "description": "Realm name (e.g., io.example.myapp). Empty = all-zero realm."
+        },
+        "macula.identityPath": {
+          "type": "string",
+          "default": "~/.macula-code/identity.json",
+          "description": "Path to persisted Ed25519 identity"
+        },
+        "macula.enableCollaboration": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable real-time collaborative editing via mesh PubSub"
+        },
+        "macula.autoConnect": {
+          "type": "boolean",
+          "default": true,
+          "description": "Connect to the mesh when the extension activates"
+        },
+        "macula.agents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "hecate-rag.query",
+            "hecate-llm.complete",
+            "hecate-dns.resolve",
+            "hecate-git.search"
+          ],
+          "description": "Agent procedures listed in the Mesh Agents view"
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "macula.connect",
+        "key": "ctrl+alt+m c",
+        "mac": "cmd+alt+m c",
+        "when": "!macula.connected"
+      },
+      {
+        "command": "macula.disconnect",
+        "key": "ctrl+alt+m d",
+        "mac": "cmd+alt+m d",
+        "when": "macula.connected"
+      },
+      {
+        "command": "macula.openRoom",
+        "key": "ctrl+alt+m o",
+        "mac": "cmd+alt+m o",
+        "when": "macula.connected"
+      },
+      {
+        "command": "macula.shareSnippet",
+        "key": "ctrl+alt+m s",
+        "mac": "cmd+alt+m s",
+        "when": "macula.connected && editorTextFocus"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "package": "vsce package --no-dependencies",
+    "prebuild": "npm install"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "@types/vscode": "^1.90.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0",
+    "vsce": "^2.15.0"
+  },
+  "dependencies": {
+    "@macula-io/ts": "^0.17.0"
+  }
+}
