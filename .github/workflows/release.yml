@@ -1,0 +1,55 @@
+name: Release
+
+# Builds the .vsix and attaches it to a GitHub Release for a pushed
+# v*.*.* tag, so the extension is distributable without the VS Code
+# Marketplace. Publishing to the Marketplace stays a separate, manual
+# step (vsce publish with VSCE_PAT) until the publisher exists.
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and attach the .vsix
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Compile
+        run: npm run compile
+
+      - name: Test
+        run: npm test
+
+      # The release names the version: a tag whose version differs from
+      # package.json would attach a .vsix that claims a different
+      # version than the tag. Refuse, like the hex publish guard.
+      - name: Refuse unless the tag matches package.json
+        run: |
+          VSN="${GITHUB_REF_NAME#v}"
+          PKG_VSN=$(node -p "require('./package.json').version")
+          if [ "$VSN" != "$PKG_VSN" ]; then
+            echo "::error::tag ${GITHUB_REF_NAME} does not match package.json version ${PKG_VSN}"
+            exit 1
+          fi
+
+      - name: Package
+        run: npm run package
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: macula-code-*.vsix
+          generate_release_notes: true

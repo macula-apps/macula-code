@@ -55,9 +55,14 @@ derivation, identity handling, and the org-namespaced procedure names.
 
 ## Install
 
-Not yet on the Marketplace. Build and install the `.vsix` locally:
+Not yet on the Marketplace. Two ways today:
 
 ```sh
+# From a GitHub Release (tag v* builds and attaches the .vsix):
+# https://github.com/macula-apps/macula-code/releases
+code --install-extension macula-code-0.1.0.vsix
+
+# Or build it yourself:
 npm install
 npm run compile
 npx @vscode/vsce package
