@@ -21,6 +21,12 @@ jobs:
       - name: Install
         run: npm ci
 
+      # The structural floor (macula-codebase-checks#9): max-depth 3 and
+      # complexity 9, both at error, in .eslintrc.json. A function that
+      # nests or branches past them fails here.
+      - name: Lint (structural floor)
+        run: npm run lint
+
       - name: Compile
         run: npm run compile
 
